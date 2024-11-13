@@ -2,7 +2,7 @@
   "name": "dashboard",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://{username}.github.io/dashboard",
+  "homepage": "https://kesameji.github.io/dashboard",
   "type": "module",
   "scripts": {
     "dev": "vite",
