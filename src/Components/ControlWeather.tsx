@@ -1,23 +1,32 @@
+import { useState, useRef } from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 export default function ControlWeather() {
-
     {/* Arreglo de objetos */ }
     let items = [
         { "name": "Precipitación", "description": "Cantidad de agua que cae sobre una superficie en un período específico." },
         { "name": "Humedad", "description": "Cantidad de vapor de agua presente en el aire, generalmente expresada como un porcentaje." },
         { "name": "Nubosidad", "description": "Grado de cobertura del cielo por nubes, afectando la visibilidad y la cantidad de luz solar recibida." }
     ]
-
+    {/* Variable de estado y función de actualización */ }
+    let [selected, setSelected] = useState(-1)
     {/* Arreglo de elementos JSX */ }
     let options = items.map((item, key) => <MenuItem key={key} value={key}>{item["name"]}</MenuItem>)
-
+    {/*Constante de referencia a un elemento HTML */ }
+    const descriptionRef = useRef<HTMLDivElement>(null);
+    {/* Manejador de eventos */ }
+    const handleChange = (event: SelectChangeEvent) => {
+        let idx = parseInt(event.target.value)
+        setSelected(idx);
+        if (descriptionRef.current !== null) {
+            descriptionRef.current.innerHTML = (idx >= 0) ? items[idx]["description"] : ""
+        }
+    };
     {/* JSX */ }
     return (
         <Paper
@@ -27,13 +36,11 @@ export default function ControlWeather() {
                 flexDirection: 'column'
             }}
         >
-
-            <Typography mb={2} component="h3" variant="h6" color="primary">
-                Variables Meteorológicas
-            </Typography>
+            {/*<Typography mb={2} component="h3" variant="h6" color="primary">
+                {(selected >= 0) ? items[selected]["description"] : ""}
+            </Typography>*/}
 
             <Box sx={{ minWidth: 120 }}>
-
                 <FormControl fullWidth>
                     <InputLabel id="simple-select-label">Variables</InputLabel>
                     <Select
@@ -41,13 +48,14 @@ export default function ControlWeather() {
                         id="simple-select"
                         label="Variables"
                         defaultValue='-1'
+                        onChange={handleChange}
                     >
                         <MenuItem key="-1" value="-1" disabled>Seleccione una variable</MenuItem>
-
                         {options}
                     </Select>
                 </FormControl>
             </Box>
+            <Typography ref={descriptionRef} mt={2} component="p" color='text.secondary'></Typography>
         </Paper>
     )
 }
