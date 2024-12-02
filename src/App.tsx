@@ -14,10 +14,18 @@ interface Indicator {
   value?: String;
 }
 
+interface Row {
+  date?: String
+  temperature?: String
+  feel?: String
+  humidity?: String
+}
+
 function App() {
 
   {/* Variable de estado y función de actualización */ }
   let [indicators, setIndicators] = useState<Indicator[]>([])
+  let [rows, setRows] = useState<Row[]>([])
   let [owm, setOWM] = useState(localStorage.getItem("openWeatherMap"))
 
   {/* Hook: useEffect */ }
@@ -34,7 +42,7 @@ function App() {
 
         {/* Request */ }
         let API_KEY = "36e4725f56a20e911fce6588948e8f37"
-        let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Guayaquil&mode=xml&appid=${API_KEY}`)
+        let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Quito&mode=xml&appid=${API_KEY}`)
         let savedTextXML = await response.text();
 
         {/* Tiempo de expiración */ }
@@ -81,10 +89,25 @@ function App() {
         let altitude = location.getAttribute("altitude") ?? ""
         dataToIndicators.push({ "title": "Location", "subtitle": "Altitude", "value": altitude })
 
-        console.log(dataToIndicators)
-
         {/* Modificación de la variable de estado mediante la función de actualización */ }
         setIndicators(dataToIndicators)
+
+        let dataToRows: Row
+        let forecast = xml.getElementsByTagName("forecast")[0];
+
+        for (let i = 0; i < 6; i++) {
+          let time = forecast.getElementsByTagName("time")[i];
+          let date = time.getAttribute("from")?.toString();
+          let temperature = time.getElementsByTagName("temperature")[0].getAttribute("value")?.toString();
+          let feel = time.getElementsByTagName("feels_like")[0].getAttribute("value")?.toString();
+          let humidity = time.getElementsByTagName("humidity")[0].getAttribute("value")?.toString();
+          dataToRows.push({ "date": date, "temperature": temperature, "feel": feel, "humidity": humidity })
+        }
+        setRows(dataToRows);
+
+        console.log(dataToIndicators)
+        console.log(dataToRows)
+
       }
     }
 
@@ -133,7 +156,9 @@ function App() {
           </Grid>
 
           <Grid size={{ xs: 12, xl: 9 }}>
-            <TableWeather />
+            <TableWeather
+              
+            />
           </Grid>
 
         </Grid>

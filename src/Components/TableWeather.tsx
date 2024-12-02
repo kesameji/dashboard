@@ -16,6 +16,13 @@ function createData(
   return { name, calories, fat, carbs, protein };
 }
 
+interface Row{
+  date?: String
+  temperature?: String
+  feel?: String
+  humidity?: String
+}
+
 const rows = [
   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
@@ -24,7 +31,8 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicTable() {
+
+export default function BasicTable(config: Row[]) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
