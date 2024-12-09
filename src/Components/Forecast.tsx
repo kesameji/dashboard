@@ -1,4 +1,4 @@
-import Paper from '@mui/material/Paper';
+﻿import Paper from '@mui/material/Paper';
 import {LineChart} from '@mui/x-charts/LineChart';
 import Typography from "@mui/material/Typography";
 
@@ -9,7 +9,8 @@ interface Row {
     humidity?: string,
     precipitation?: string,
 }
-export default function BasicTable({filas}: { filas: Row[] }) {
+
+export default function Forecast({filas}: { filas: Row[] }) {
     return (
         <Paper
             sx={{
@@ -23,20 +24,17 @@ export default function BasicTable({filas}: { filas: Row[] }) {
             }}
         >
             <Typography>
-                Full Forecast
+                24h Forecast
             </Typography>
 
             {/* Componente para un gráfico de líneas */}
             <LineChart
-                width={900}
-                height={300}
+                width={300}
+                height={250}
                 series={[
-                    {data: filas.map(f => Number.parseInt(f.temperature as string)), label: 'Temp', color: 'red',},
-                    {data: filas.map(f => Number.parseInt(f.feel as string)), label: 'Real feel', color: 'orange'},
-                    {data: filas.map(f => Number.parseInt(f.humidity as string)), label: 'Humidity', color: 'cyan'},
-                    {data: filas.map(f => Number.parseFloat(f.precipitation as string) * 100), label: 'Precipitation', color: 'blue'},
+                    {data: filas.map(f => Number.parseInt(f.temperature as string)).slice(0, 7), label: 'Temp', color: 'red',},
                 ]}
-                xAxis={[{scaleType: 'point', data: filas.map(f => f.date)}]}
+                xAxis={[{scaleType: 'point', data: filas.map(f => f.date).slice(0, 7)}]}
 
             />
         </Paper>
