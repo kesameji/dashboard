@@ -90,7 +90,7 @@ export default function BasicTable({filas}: { filas: Row[] }) {
             {/* Componente para un gráfico de líneas */}
             <LineChart
                 width={900}
-                height={300}
+                height={334}
                 series={[
                     {data: getData(filas, option), color: '#5b21b6'},
                 ]}

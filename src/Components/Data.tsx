@@ -85,10 +85,24 @@ export default function Data(now: Datas) {
                     </Select>
                 </FormControl>
             </Grid>
-            <Gauge width={200} height={200} value={getData(now, option)} valueMin={0} valueMax={100}
-            sx={{
-                color: 'white',
+            <Grid sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+            <Gauge 
+                width={200} 
+                height={218} 
+                value={getData(now, option)} 
+                valueMin={0} 
+                valueMax={100}
+                sx={{
+                    color: 'white',
+                    alignContent: 'center',
+                    justifyContent: 'center',
             }}/>
+            </Grid>
         </Paper>
 
     );
